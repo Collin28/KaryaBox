@@ -9,6 +9,9 @@ $router = new Router();
 $router->add('GET','/','LandingController','index');
 $router->add('GET','/home','HomeController','home');
 $router->add('GET','/login','AuthController','login');
+$router->add('GET','/regis','AuthController','regis');
+
+
 
 
 
