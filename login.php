@@ -54,54 +54,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Login</title>
 
-    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
 
-<body>
+<body class="bg-[#1d2b4f] flex justify-center items-center h-screen m-0 font-sans">
 
-<form method="POST" class="atas">
-
-    <img
-        src="Group_20-removebg-preview.png"
-        class="logo"
+    <form 
+        method="POST"
+        class="bg-[#f2f2f2] w-80 p-6 rounded-lg text-center relative"
     >
 
-    <h2>LOGIN</h2>
+        <!-- Logo -->
+        <img
+            src="Group_20-removebg-preview.png"
+            class="w-6 absolute top-2 left-2"
+        >
 
-    <?php if (!empty($error)) : ?>
+        <!-- Title -->
+        <h2 class="text-[#d4a62a] text-2xl font-bold mb-5">
+            LOGIN
+        </h2>
 
-        <p class="error" id="error-message">
-            <?= $error ?>
-        </p>
+        <!-- Error -->
+        <?php if (!empty($error)) : ?>
 
-    <?php endif; ?>
+            <p class="text-red-500 text-sm mb-2 text-center">
+                <?= $error ?>
+            </p>
 
-    <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-    >
+        <?php endif; ?>
 
-    <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-    >
+        <!-- Email -->
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            class="w-11/12 p-2 my-2 border border-[#d4a62a] rounded outline-none"
+        >
 
-    <button type="submit">
-        Masuk Akun
-    </button>
+        <!-- Password -->
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            class="w-11/12 p-2 my-2 border border-[#d4a62a] rounded outline-none"
+        >
 
-    <a href="register.php" class="bawah">
-        Buat Akun
-    </a>
+        <!-- Button -->
+        <button
+            type="submit"
+            class="w-11/12 p-2 mt-4 bg-[#d4a62a] text-white rounded hover:bg-[#b88d20]"
+        >
+            Masuk Akun
+        </button>
 
-</form>
+        <!-- Register -->
+        <a
+            href="register.php"
+            class="block mt-3 text-blue-600 text-xs"
+        >
+            Buat Akun
+        </a>
 
-<script src="script.js"></script>
+    </form>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
