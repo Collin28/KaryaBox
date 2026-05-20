@@ -6,24 +6,18 @@ require_once '../app/models/Achievement.php';
 use App\Core\Controller;
 use App\Models\Achievement;
 
-class HomeController extends Controller
+class DetailController extends Controller
 {
 
-    public function home(): void
+    public function detail(): void
     {
         $achievementModel = new Achievement();
-        $achievementBanners = $achievementModel->getAchivementBanners();
         $achievementsWithoutBanner = $achievementModel->getAchivementsWithoutBanner();
 
-
-
-        $this->view('home', [
-            'achievementBanners' => $achievementBanners,
+        $this->view('detailkarya', [
             'achievementsWithoutBanner' => $achievementsWithoutBanner
         ]);
     }
 
 }
-
-
 ?>

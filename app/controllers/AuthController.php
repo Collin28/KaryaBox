@@ -5,6 +5,7 @@
 
         public function login():void{
             require_once '../app/views/loginpage.php';
+            
         }
 
         public function regis():void{
