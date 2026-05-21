@@ -19,12 +19,6 @@
             <a href="#" class="bg-[#D4AF37] text-black px-4 py-1 rounded-md text-sm font-semibold">Galeri</a>
         </div>
 
-        <!-- Right -->
-        <div class="flex gap-2">
-            <button class="text-[#D4AF37] border border-[#D4AF37] rounded-xl px-4 py-1 text-sm">Masuk</button>
-            <button class="text-[#D4AF37] border border-[#D4AF37] rounded-xl px-4 py-1 text-sm">Sign-up</button>
-        </div>
-
     </header>
 
     <hr class="border-[#D4AF37] mx-6">
@@ -61,7 +55,7 @@
                         <h3 class="text-base font-semibold"><?= $achievement['title'] ?></h3>
                         <p class="text-sm text-gray-300"><?= $achievement['category_name'] ?></p>
                         <p class="text-xs text-gray-300"><?= $achievement['nama_sekolah'] ?></p>
-
+                        <a href="/achievements/<?= $achievement['id']?>" class ="text-[#D4AF37]">Detail</a>
                     </div>
                 </div>
             <?php endforeach; ?>

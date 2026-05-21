@@ -45,6 +45,34 @@ class Achievement extends Database
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
+    public function getAchivement(int $id)
+    {
+
+        $query = "SELECT achievements.*, 
+                     unit_sekolah.nama_sekolah,
+                     categories.category_name AS category_name
+              FROM achievements
+
+              LEFT JOIN unit_sekolah
+              ON achievements.unit_sekolah_id = unit_sekolah.id
+
+              LEFT JOIN categories
+              ON achievements.category_id = categories.id WHERE achievements.id = ?";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+
+        $result = $stmt->get_result();
+        $achievement = $result->fetch_assoc();
+
+
+        return $achievement;
+
+    }
+
+    
+
 
 
 }
