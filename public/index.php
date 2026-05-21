@@ -9,13 +9,8 @@ $router = new Router();
 $router->add('GET','/','LandingController','index');
 $router->add('GET','/home','HomeController','home');
 $router->add('GET','/admin/login','AuthController','login');
-$router->add('GET','/detail','DetailController','detail');
 
-
-
-
-
-
+$router->add('GET','/achievements/{id}','AchievementController','show');
 
 $router->run();
 

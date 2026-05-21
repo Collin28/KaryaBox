@@ -22,7 +22,6 @@
         class="fixed inset-0 opacity-[0.04] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
     </div>
 
-    <?php foreach ($achievementsWithoutBanner as $achievement): ?>
     <!-- Container -->
     <div class="w-[90%] max-w-[800px] relative z-10">
 
@@ -38,7 +37,7 @@
             <!-- Image -->
             <div class="image-box">
 
-                <img src="foto tes.webp" id="artImg"
+                <img src="/<?= $achievement['image_url'] ?>" id="artImg"
                     class="w-full md:w-[250px] h-full object-cover rounded-xl cursor-pointer transition duration-300 hover:scale-[1.03] hover:brightness-90 shadow-md">
 
             </div>
@@ -47,11 +46,11 @@
             <div class="flex-1 flex flex-col justify-center">
 
                 <h2 class="text-[28px] font-bold text-[#111] leading-tight">
-                    <?= $achievement['title']?>
+                    <?= $achievement['title'] ?>
                 </h2>
 
                 <p class="text-gray-500 text-[15px] mt-1 mb-5 font-normal">
-                    <?= $achievement['nama_sekolah']?>
+                    <?= $achievement['nama_sekolah'] ?>
                 </p>
 
                 <hr class="border-0 h-[1px] bg-gray-200 mb-5">
@@ -69,7 +68,7 @@
 
                 <div class="flex mb-3 text-[15px]">
                     <span class="font-semibold w-20 text-gray-800">Category</span>
-                    <span class="text-gray-600">:  <?= $achievement['category_name']?></span>
+                    <span class="text-gray-600">: <?= $achievement['category_name'] ?></span>
                 </div>
 
                 <!-- Description -->
@@ -80,7 +79,7 @@
                     </h3>
 
                     <p class="text-gray-600 leading-relaxed text-sm">
-                       <?= $achievement['description']?>
+                        <?= $achievement['description'] ?>
                     </p>
 
                 </div>
@@ -88,14 +87,15 @@
             </div>
 
         </div>
-        <?php endforeach;?>
+
+
         <!-- Buttons -->
         <div class="mt-8 flex justify-center gap-5">
 
-            <button id="downloadBtn"
+            <a href="/home" id="downloadBtn"
                 class="px-10 py-4 text-lg rounded-xl font-semibold bg-yellow-400 text-yellow-900 shadow-lg transition hover:bg-yellow-500 active:scale-95">
-                Download
-            </button>
+                Back
+            </a>
 
             <button id="saveBtn"
                 class="px-10 py-4 text-lg rounded-xl font-semibold bg-gray-100 text-gray-700 transition hover:bg-gray-200 active:scale-95">
