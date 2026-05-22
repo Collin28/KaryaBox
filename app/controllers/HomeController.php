@@ -17,7 +17,7 @@ class HomeController extends Controller
 
 
 
-        $this->view('home', [
+        $this->view('achievements.home', [
             'achievementBanners' => $achievementBanners,
             'achievementsWithoutBanner' => $achievementsWithoutBanner
         ]);

@@ -55,13 +55,62 @@
                         <h3 class="text-base font-semibold"><?= $achievement['title'] ?></h3>
                         <p class="text-sm text-gray-300"><?= $achievement['category_name'] ?></p>
                         <p class="text-xs text-gray-300"><?= $achievement['nama_sekolah'] ?></p>
-                        <a href="/achievements/<?= $achievement['id']?>" class ="text-[#D4AF37]">Detail</a>
+                        <a href="/achievements/<?= $achievement['id'] ?>" class="text-[#D4AF37]">Detail</a>
                     </div>
                 </div>
             <?php endforeach; ?>
-
         </div>
     </section>
+
+    <footer class="text-white-500 mt-8">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
+
+            <!-- Logo & Desc -->
+            <div>
+                <h1 class="text-2xl font-bold text-white mb-3 ml-6">
+                    Karya<span class="text-[#D4AF37]">Box</span>
+                </h1>
+
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Platform digital untuk menampilkan karya terbaik siswa
+                    dan menjadi wadah kreativitas tanpa batas.
+                </p>
+            </div>
+
+            <!-- Navigation -->
+            <div>
+                <h2 class="font-semibold text-lg mb-4">Navigation</h2>
+
+                <ul class="space-y-2 text-zinc-400 text-sm">
+                    <li>
+                        <a href="/" class="hover:text-orange-500 transition">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/gallery" class="hover:text-orange-500 transition">
+                            Gallery
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/about" class="hover:text-orange-500 transition">
+                            About
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bottom -->
+            <div class="border-t border-zinc-800">
+                <div
+                    class="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center text-sm text-zinc-500 ">
+
+                    <p>
+                        © 2026 Karyabox. All rights reserved.
+                    </p>
+                </div>
 
 </body>
 

@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use App\Controllers\StudentController;
+use App\Controllers\AchievementController;
 
 class Router
 {
