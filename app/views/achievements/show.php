@@ -58,12 +58,7 @@
                 <!-- Detail -->
                 <div class="flex mb-3 text-[15px]">
                     <span class="font-semibold w-20 text-gray-800">Nama</span>
-                    <span class="text-gray-600">: -</span>
-                </div>
-
-                <div class="flex mb-3 text-[15px]">
-                    <span class="font-semibold w-20 text-gray-800">Kelas</span>
-                    <span class="text-gray-600">: -</span>
+                    <span class="text-gray-600">: <?= $achievement['name'] ?></span>
                 </div>
 
                 <div class="flex mb-3 text-[15px]">

@@ -4,14 +4,8 @@
     class AuthController {
 
         public function login():void{
-            require_once '../app/views/loginpage.php';
-            
+            require_once '../app/views/loginadmin.php';  
         }
-
-        public function regis():void{
-            require_once '../app/views/regis.php';
-        }
-
     }
     
 ?>

@@ -68,16 +68,67 @@ class Achievement extends Database
 
 
         return $achievement;
-
     }
 
-    
+    public function insert(array $data, array $file = [])
+    {
+        $name = htmlspecialchars($data['name']);
+        $title = htmlspecialchars($data['title']);
+        $desc = htmlspecialchars($data['description']);
+        $cate = (int) $data['category_id'];
+        $school = (int) $data['unit_sekolah_id'];
 
+        $imageUrl = $this->uploadImage($file);
 
+        if ($imageUrl === false) {
+            return false;
+        }
 
+        $query = "INSERT INTO {$this->table} 
+              (name, title, description, category_id, unit_sekolah_id, image_url) 
+              VALUES (?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('sssiis', $name, $title, $desc, $cate, $school, $imageUrl);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
+    }
+
+    private function uploadImage(array $file): string|null|false
+    {
+        if (empty($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return false;
+        }
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mimeType, $allowedTypes)) {
+            return false;
+        }
+
+        if ($file['size'] > 2 * 1024 * 1024) {
+            return false;
+        }
+
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = uniqid('achievement_', true) . '.' . strtolower($ext);
+
+        $destPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/' . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $destPath)) {
+            return 'assets/images/' . $filename;
+        }
+        return false;
+    }
 }
-
-
 
 
 ?>

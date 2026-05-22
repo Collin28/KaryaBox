@@ -16,7 +16,6 @@
 
            $content = "../app/views/{$view}.php";
 
-        //    require_once "../app/views/layouts/app.php";
         require_once $content;
         }
     }
