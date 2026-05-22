@@ -55,7 +55,9 @@
                         <h3 class="text-base font-semibold"><?= $achievement['title'] ?></h3>
                         <p class="text-sm text-gray-300"><?= $achievement['category_name'] ?></p>
                         <p class="text-xs text-gray-300"><?= $achievement['nama_sekolah'] ?></p>
+
                         <a href="/achievements/<?= $achievement['id'] ?>" class="text-[#D4AF37]">Detail</a>
+                        <a href="/achievements/<?= $achievement['id']?>" class ="text-[#D4AF37]">Detail</a>
                     </div>
                 </div>
             <?php endforeach; ?>
