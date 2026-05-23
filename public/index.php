@@ -17,6 +17,11 @@ $router->add('GET','/detail','DetailController','detail');
 
 
 
+$router->add('GET','/achievements/{id}','AchievementController','show');
+$router->add('GET',  '/achievements/insert', 'AchievementController', 'insert');
+$router->add('GET','/achievements/list','AchievementController','list');
+
+$router->add('POST', '/achievement/insert', 'AchievementController', 'insert');
 $router->run();
 
 ?>
