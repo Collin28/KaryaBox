@@ -32,7 +32,7 @@
         </div>
 
         <div class="flex items-center justify-between mt-8 mb-8">
-            <a href="/achievement/insert"
+            <a href="/achievements/insert"
                 class="bg-yellow-500 text-black w-12 h-12 rounded-full text-3xl font-bold flex items-center justify-center hover:scale-110 transition active:scale-95 shadow-md">
                 +
             </a>
@@ -70,10 +70,13 @@
                         <div class="flex justify-between gap-1.5 w-full border-t border-gray-700/40 pt-2.5 mt-1">
                             <a href="/achievement/edit/<?= $achievement['id']; ?>"
                                 class="bg-yellow-500 hover:bg-yellow-400 text-black py-1 rounded-full font-bold text-[11px] transition flex-1 text-center">Edit</a>
-                            <a href="/achievement/detail/<?= $achievement['id']; ?>"
+                            <a href="/achievements/<?= $achievement['id'] ?>"
                                 class="bg-yellow-500 hover:bg-yellow-400 text-black py-1 rounded-full font-bold text-[11px] transition flex-1 text-center">Detail</a>
-                            <a href="/achievement/delete/<?= $achievement['id']; ?>" onclick="return confirm('Hapus data ini?')"
-                                class="bg-yellow-500 hover:bg-yellow-400 text-black py-1 rounded-full font-bold text-[11px] transition flex-1 text-center">Hapus</a>
+                            <form onsubmit="return confirm('Apakah Anda yakin ingin menghapus data siswa ini?')"
+                                action="/achievements/<?= $achievement['id'] ?>" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-black py-1 rounded-full font-bold text-[11px] transition flex-1 text-center">Hapus</button>
+                            </form>
                         </div>
 
                     </div> <?php endforeach; ?>

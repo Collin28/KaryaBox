@@ -53,15 +53,11 @@
                     <img src="<?= $achievement['image_url'] ?>" class="w-14 h-14 rounded-md object-cover">
                     <div>
                         <h3 class="text-base font-semibold"><?= $achievement['title'] ?></h3>
+                        <p class="text-sm text-gray-300"><?= $achievement['nama_sekolah'] ?></p>
                         <p class="text-sm text-gray-300"><?= $achievement['category_name'] ?></p>
-                        <p class="text-xs text-gray-300"><?= $achievement['nama_sekolah'] ?></p>
-<<<<<<< HEAD
+
 
                         <a href="/achievements/<?= $achievement['id'] ?>" class="text-[#D4AF37]">Detail</a>
-                        <a href="/achievements/<?= $achievement['id']?>" class ="text-[#D4AF37]">Detail</a>
-=======
-                        <a href="/achievements/<?= $achievement['id'] ?>" class="text-[#D4AF37]">Detail</a>
->>>>>>> collin/new-recovery-branch-insert-and-list-achievements
                     </div>
                 </div>
             <?php endforeach; ?>

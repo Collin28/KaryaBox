@@ -8,21 +8,18 @@ use App\Models\Achievement;
 
 class AchievementController extends Controller
 {
-
-    public function show(string $id)
+    public function show(string $id): void
     {
-        $id = intval($id);
         $achievementModel = new Achievement();
-        $achievement = $achievementModel->getAchivement($id);
+        $achievement = $achievementModel->getAchivement((int)$id);
 
         $this->view('achievements.show', [
             'achievement' => $achievement
         ]);
     }
 
-    public function insert()
+    public function insert(): void
     {
-
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->view('achievements.insert');
             return;
@@ -37,46 +34,32 @@ class AchievementController extends Controller
             exit;
         } else {
             $_SESSION['error'] = 'Gagal menyimpan data. Cek format/ukuran gambar.';
-            header('Location: /achievement/insert');
+            header('Location: /achievements/list');
             exit;
         }
     }
 
-    public function list()
+    public function list(): void
     {
-
         $achievementModel = new Achievement();
         $achievements = $achievementModel->getAchivementsWithoutBanner();
-        
+
         $this->view('achievements.list', [
             'achievementsWithoutBanner' => $achievements
         ]);
     }
 
-    public function update(array $data, int $id): bool
+    public function delete(string $id): void 
     {
-        $query = "UPDATE {$this->table} SET 
-                    name = ?, 
-                    title = ?, 
-                    description = ?, 
-                    category_id = ?, 
-                    unit_sekolah_id = ?, 
-                    image_url = ? 
-                  WHERE id = ?";
+        $achievementModel = new Achievement();
+        $deleted = $achievementModel->delete((int)$id); 
 
-        $stmt = $this->connection->prepare($query);
+        if ($deleted) {
+            header('Location: /achievements/list');
+            exit;
+        }
 
-        $name = htmlspecialchars($data['name']);
-        $title = htmlspecialchars($data['title']);
-        $desc = htmlspecialchars($data['description']);
-        $cate = (int) $data['category_id'];
-        $school = (int) $data['unit_sekolah_id'];
-        $imageUrl = $data['image_url'];
-
-        $stmt->bind_param('sssiisi', $name, $title, $desc, $cate, $school, $imageUrl, $id);
-        $stmt->execute();
-
-        return $stmt->errno === 0;
+        http_response_code(500);
+        echo 'Gagal menghapus data.';
     }
 }
-?>

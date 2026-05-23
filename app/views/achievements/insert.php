@@ -34,7 +34,7 @@
 
     <!-- Form — action, method, enctype all required -->
     <div class="border-2 border-[#F4C430] rounded-lg p-8">
-      <form action="/achievement/insert" method="POST" enctype="multipart/form-data" class="space-y-5">
+      <form action="/achievements/insert" method="POST" enctype="multipart/form-data" class="space-y-5">
 
         <!-- Nama Siswa -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
@@ -93,7 +93,7 @@
 
         <!-- Buttons -->
         <div class="flex justify-end gap-4 pt-4">
-          <a href="/home"
+          <a href="/achievements/insert"
             class="bg-[#F4C430] text-[#1B1F3B] px-8 py-3 rounded-full font-bold hover:scale-105 transition">
             Batal
           </a>

@@ -86,8 +86,8 @@ class Achievement extends Database
         }
 
         $query = "INSERT INTO {$this->table} 
-              (name, title, description, category_id, unit_sekolah_id, image_url) 
-              VALUES (?, ?, ?, ?, ?, ?)";
+          (name, title, description, category_id, unit_sekolah_id, image_url) 
+          VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->connection->prepare($query);
         $stmt->bind_param('sssiis', $name, $title, $desc, $cate, $school, $imageUrl);
@@ -129,7 +129,15 @@ class Achievement extends Database
         }
         return false;
     }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->connection->prepare("DELETE FROM achievements WHERE id = ?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        return $stmt->errno === 0;
+    }
+
 }
-
-
 ?>
