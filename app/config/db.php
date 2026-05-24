@@ -4,11 +4,9 @@ $conn = new mysqli(
     "localhost",
     "root",
     "",
-    "login"
+    "nama_database"
 );
 
 if ($conn->connect_error) {
     die("Connection failed");
 }
-
-?>

@@ -1,53 +1,66 @@
 <?php
-
 namespace App\Core;
 
-use App\Controllers\StudentController;
+class Router {
+    private $routes = [];
 
-class Router
-{
-    private array $routes = [];
-
-    public function add(string $method, string $uri, string $controller, string $function)
-    {
+    public function add($method, $path, $controller, $action) {
         $this->routes[] = [
             'method' => $method,
-            'uri' => $uri,
+            'path' => $path,
             'controller' => $controller,
-            'function' => $function,
+            'action' => $action
         ];
     }
 
-    public function run()
-    {
+    public function run() {
         $method = $_SERVER['REQUEST_METHOD'];
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $url = $_SERVER['REQUEST_URI'];
 
-        foreach ($this->routes as $route) {
-            $pattern = str_replace(
-                '{id}',
-                '([0-9]+)',
-                $route['uri']
-            );
+        // 1. Buang subfolder Laragon dari string URL
+        $url = str_replace('/KARYABOX/public', '', $url);
+        
+        // 2. Potong query string jika ada tanda ? di URL
+        $url = explode('?', $url)[0];
+        
+        // 3. Standarisasi format URL (Hapus slash di akhir jika bukan root '/')
+        if ($url !== '/' && substr($url, -1) === '/') {
+            $url = rtrim($url, '/');
+        }
+        
+        // 4. Pastikan jika url kosong, setel ke '/'
+        if (empty($url)) {
+            $url = '/';
+        }
 
-            $pattern = '#^' . $pattern . '$#';
+        foreach ($this->routes ?? [] as $route) {
+            if ($route['method'] === $method && $route['path'] === $url) {
+                $controllerName = $route['controller'];
+                $action = $route['action'];
 
-            if (preg_match($pattern, $uri, $matches)) {
-                require_once '../app/controllers/' . $route['controller'] . '.php';
-                array_shift($matches);
-                $controllerClass = 'App\\Controllers\\' . $route['controller'];
-                $controller = new $controllerClass();
-
-                $function = $route['function'];
-                call_user_func_array([$controller, $function], $matches);
-
-            
-                return;
+                // Load file controllernya
+                $file = "../app/controllers/{$controllerName}.php";
+                if (file_exists($file)) {
+                    require_once $file;
+                } else {
+                    die("File Controller <b>{$controllerName}.php</b> tidak ditemukan di folder app/controllers/");
+                }
+                
+                // SOLUSI UTAMA: Panggil class secara global (\) agar lepas dari jebakan namespace App\Core
+                $globalControllerClass = '\\' . $controllerName;
+                
+                if (class_exists($globalControllerClass)) {
+                    $controller = new $globalControllerClass();
+                    $controller->$action();
+                    return;
+                } else {
+                    die("Class <b>{$controllerName}</b> tidak ditemukan di dalam file {$controllerName}.php. Periksa penulisan nama class kamu!");
+                }
             }
         }
 
+        // Jika rute tidak ditemukan
         http_response_code(404);
-        echo '<h1>404 - Page Not Found</h1>';
+        echo "<h1>404 - Rute '$url' Tidak Terdaftar!</h1>";
     }
-
 }
