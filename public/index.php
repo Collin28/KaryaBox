@@ -1,27 +1,24 @@
 <?php
-// public/index.php
-
-// Jalankan session di awal agar aman untuk proses login nanti
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Gunakan __DIR__ agar PHP mencari folder secara absolut dan akurat dari posisi file ini
-require_once __DIR__ . '/../app/core/Controller.php';
-require_once __DIR__ . '/../app/core/Database.php';
-require_once __DIR__ . '/../app/core/Router.php';
+require_once '../app/core/Router.php';
 
 use App\Core\Router;
 
 $router = new Router();
 
-// Daftar Rute Bersih (karena subfolder sudah diurus otomatis oleh Router.php)
-$router->add('GET', '/', 'AuthController', 'login');
-$router->add('POST', '/', 'AuthController', 'authenticate');
+// Register Routes
+$router->add('GET','/','LandingController','index');
+$router->add('GET','/home','HomeController','home');
+$router->add('GET','/admin/login','AuthController','login');
 
-$router->add('GET', '/admin/login', 'AuthController', 'login');
-$router->add('POST', '/admin/login', 'AuthController', 'authenticate');
+$router->add('GET','/achievements/{id}','AchievementController','show');
+$router->add('GET',  '/achievements/insert', 'AchievementController', 'insert');
+$router->add('GET','/achievements/list','AchievementController','list');
 
-// Jalankan Router
+$router->add('POST', '/achievements/insert', 'AchievementController', 'insert');
+$router->add('DELETE', '/achievements/{id}', 'AchievementController','delete');
+
+$router->add('GET',  '/achievements/{id}/edit',   'AchievementController', 'edit');
+$router->add('POST', '/achievements/{id}/update',  'AchievementController', 'update');
 $router->run();
+
 ?>
