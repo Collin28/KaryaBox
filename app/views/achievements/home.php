@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="/css/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Home / Karya-Box</title>
 </head>
 

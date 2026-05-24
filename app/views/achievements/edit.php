@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>Tambah Data</title>
+  <title>Edit Data</title>
 </head>
 
 <body class="bg-[#1B1F3B] min-h-screen flex items-center justify-center p-5">
@@ -30,16 +30,24 @@
 
     <hr class="border-gray-500 mb-6">
 
-    <h1 class="text-center text-4xl font-bold mb-10">Tambah Data</h1>
+    <h1 class="text-center text-4xl font-bold mb-10">Edit Data</h1>
 
-    <!-- Form — action, method, enctype all required -->
+    <!-- Error message -->
+    <?php if (isset($_SESSION['error'])): ?>
+      <div class="mb-4 text-center text-red-400 font-semibold">
+        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+      </div>
+    <?php endif; ?>
+
+    <!-- Form -->
     <div class="border-2 border-[#F4C430] rounded-lg p-8">
-      <form action="/achievements/insert" method="POST" enctype="multipart/form-data" class="space-y-5">
+      <form action="/achievements/<?= $achievement['id'] ?>/update" method="POST" enctype="multipart/form-data" class="space-y-5">
 
         <!-- Nama Siswa -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
           <label class="text-2xl font-semibold">Nama Siswa</label>
           <input type="text" name="name" required
+            value="<?= htmlspecialchars($achievement['name'] ?? '') ?>"
             class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
         </div>
 
@@ -47,6 +55,7 @@
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
           <label class="text-2xl font-semibold">Sekolah</label>
           <input type="text" name="unit_sekolah_id" required
+            value="<?= htmlspecialchars($achievement['unit_sekolah_id'] ?? '') ?>"
             class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
         </div>
 
@@ -54,6 +63,7 @@
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
           <label class="text-2xl font-semibold">Judul Karya</label>
           <input type="text" name="title" required
+            value="<?= htmlspecialchars($achievement['title'] ?? '') ?>"
             class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
         </div>
 
@@ -61,6 +71,7 @@
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
           <label class="text-2xl font-semibold">Kategori</label>
           <input type="text" name="category_id" required
+            value="<?= htmlspecialchars($achievement['category_id'] ?? '') ?>"
             class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
         </div>
 
@@ -68,13 +79,20 @@
         <div class="grid grid-cols-[180px_1fr] gap-4">
           <label class="text-2xl font-semibold pt-3">Deskripsi Karya</label>
           <textarea name="description" rows="4" required
-            class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white resize-none"></textarea>
+            class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white resize-none"><?= htmlspecialchars($achievement['description'] ?? '') ?></textarea>
         </div>
 
         <!-- Upload Foto -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
           <label class="text-2xl font-semibold">Upload Foto Karya</label>
           <div class="flex items-center gap-4">
+
+            <!-- Current image preview -->
+            <?php if (!empty($achievement['image_url'])): ?>
+              <img src="/<?= htmlspecialchars($achievement['image_url']) ?>"
+                alt="Current Image"
+                class="w-16 h-16 object-cover rounded-lg border-2 border-[#F4C430]">
+            <?php endif; ?>
 
             <!-- Hidden real file input -->
             <input type="file" id="image_url" name="image_url" accept="image/*" class="hidden"
@@ -87,19 +105,21 @@
             </button>
 
             <!-- Shows selected filename -->
-            <span id="file-label" class="text-sm text-gray-300">No File Selected</span>
+            <span id="file-label" class="text-sm text-gray-300">
+              <?= !empty($achievement['image_url']) ? 'Gambar saat ini tersimpan' : 'No File Selected' ?>
+            </span>
           </div>
         </div>
 
         <!-- Buttons -->
         <div class="flex justify-end gap-4 pt-4">
-          <a href="/achievements/insert"
+          <a href="/achievements/list"
             class="bg-[#F4C430] text-[#1B1F3B] px-8 py-3 rounded-full font-bold hover:scale-105 transition">
             Batal
           </a>
           <button type="submit"
             class="bg-[#F4C430] text-[#1B1F3B] px-8 py-3 rounded-full font-bold hover:scale-105 transition">
-            Simpan Karya
+            Simpan Perubahan
           </button>
         </div>
 

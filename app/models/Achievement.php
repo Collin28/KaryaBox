@@ -139,5 +139,37 @@ class Achievement extends Database
         return $stmt->errno === 0;
     }
 
+    public function update(int $id, array $data, array $file = []): bool
+{
+    $title  = htmlspecialchars($data['title']);
+    $desc   = htmlspecialchars($data['description']);
+    $cate   = (int) $data['category_id'];
+
+    $imageUrl = $this->uploadImage($file);
+
+    if ($imageUrl === false) {
+        return false;
+    }
+
+    if ($imageUrl === null) {
+        // No new image — keep existing
+        $query = "UPDATE {$this->table} 
+                  SET title=?, description=?, category_id=? 
+                  WHERE id=?";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('ssii', $title, $desc, $cate, $id);
+    } else {
+        // New image uploaded
+        $query = "UPDATE {$this->table} 
+                  SET title=?, description=?, category_id=?, image_url=? 
+                  WHERE id=?";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('ssiis', $title, $desc, $cate, $imageUrl, $id);
+    }
+
+    $stmt->execute();
+    return $stmt->affected_rows >= 0 && $stmt->errno === 0;
+}
+
 }
 ?>

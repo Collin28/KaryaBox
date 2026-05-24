@@ -16,6 +16,9 @@ $router->add('GET','/achievements/list','AchievementController','list');
 
 $router->add('POST', '/achievements/insert', 'AchievementController', 'insert');
 $router->add('DELETE', '/achievements/{id}', 'AchievementController','delete');
+
+$router->add('GET',  '/achievements/{id}/edit',   'AchievementController', 'edit');
+$router->add('POST', '/achievements/{id}/update',  'AchievementController', 'update');
 $router->run();
 
 ?>

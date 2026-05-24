@@ -62,4 +62,41 @@ class AchievementController extends Controller
         http_response_code(500);
         echo 'Gagal menghapus data.';
     }
+
+        public function edit(string $id): void
+{
+    $achievementModel = new Achievement();
+    $achievement = $achievementModel->getAchivement((int)$id);
+
+    if (!$achievement) {
+        http_response_code(404);
+        echo 'Data tidak ditemukan.';
+        return;
+    }
+
+    $this->view('achievements.edit', [
+        'achievement' => $achievement
+    ]);
 }
+
+public function update(string $id): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: /achievements/' . $id . '/edit');
+        exit;
+    }
+
+    $achievementModel = new Achievement();
+    $file = $_FILES['image_url'] ?? [];
+    $success = $achievementModel->update((int)$id, $_POST, $file);
+
+    if ($success) {
+        header('Location: /achievements/list');
+        exit;
+    } else {
+        $_SESSION['error'] = 'Gagal mengupdate data. Cek format/ukuran gambar.';
+        header('Location: /achievements/' . $id . '/edit');
+        exit;
+    }
+}
+    }
