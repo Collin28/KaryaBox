@@ -140,36 +140,64 @@ class Achievement extends Database
     }
 
     public function update(int $id, array $data, array $file = []): bool
-{
-    $name   = htmlspecialchars($data['name']);
-    $title  = htmlspecialchars($data['title']);
-    $desc   = htmlspecialchars($data['description']);
-    $cate   = (int) $data['category_id'];
-    $school = (int) $data['unit_sekolah_id'];
+    {
+        $name = htmlspecialchars($data['name']);
+        $title = htmlspecialchars($data['title']);
+        $desc = htmlspecialchars($data['description']);
+        $cate = (int) $data['category_id'];
+        $school = (int) $data['unit_sekolah_id'];
 
-    $imageUrl = $this->uploadImage($file);
+        $imageUrl = $this->uploadImage($file);
 
-    if ($imageUrl === false) {
-        return false;
-    }
+        if ($imageUrl === false) {
+            return false;
+        }
 
-    if ($imageUrl === null) {
-        $query = "UPDATE {$this->table} 
+        if ($imageUrl === null) {
+            $query = "UPDATE {$this->table} 
                   SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=? 
                   WHERE id=?";
-        $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('sssiii', $name, $title, $desc, $cate, $school, $id);
-    } else {
-        $query = "UPDATE {$this->table} 
+            $stmt = $this->connection->prepare($query);
+            $stmt->bind_param('sssiii', $name, $title, $desc, $cate, $school, $id);
+        } else {
+            $query = "UPDATE {$this->table} 
                   SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=?, image_url=? 
                   WHERE id=?";
-        $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('sssiisi', $name, $title, $desc, $cate, $school, $imageUrl, $id);
+            $stmt = $this->connection->prepare($query);
+            $stmt->bind_param('sssiisi', $name, $title, $desc, $cate, $school, $imageUrl, $id);
+        }
+
+        $stmt->execute();
+        return $stmt->affected_rows >= 0 && $stmt->errno === 0;
     }
 
-    $stmt->execute();
-    return $stmt->affected_rows >= 0 && $stmt->errno === 0;
-}
+    public function searchAchievements(string $keyword): array
+    {
+        $keyword = "%{$keyword}%";
+
+        $query = "SELECT achievements.*, 
+                     unit_sekolah.nama_sekolah,
+                     categories.category_name AS category_name
+              FROM achievements
+              LEFT JOIN unit_sekolah
+                ON achievements.unit_sekolah_id = unit_sekolah.id
+              LEFT JOIN categories
+                ON achievements.category_id = categories.id
+              WHERE achievements.banner_image IS NULL
+                AND (
+                    achievements.name        LIKE ? OR
+                    achievements.title       LIKE ? OR
+                    unit_sekolah.nama_sekolah LIKE ? OR
+                    categories.category_name  LIKE ?
+                )
+              ORDER BY achievements.id DESC";
+
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param('ssss', $keyword, $keyword, $keyword, $keyword);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 
 }
 ?>

@@ -19,20 +19,31 @@
                     onerror="this.src='https://via.placeholder.com/48?text=Logo'">
             </div>
 
-            <div class="relative w-full sm:w-[380px]">
-                <input type="text" placeholder="Cari di KaryaBox"
-                    class="w-full bg-transparent border border-yellow-400 rounded-full pl-12 pr-4 py-2.5 text-yellow-400 placeholder-yellow-400/70 outline-none focus:ring-2 focus:ring-yellow-400/50 transition">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-yellow-400" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
+            <!-- ✅ SEARCH FORM — ada di header, bukan di dalam card -->
+            <form method="GET" action="/achievements/list" class="relative w-full sm:w-[380px]">
+                <input type="text" name="keyword" value="<?= htmlspecialchars($keyword ?? '') ?>"
+                    placeholder="Cari di KaryaBox"
+                    class="w-full bg-transparent border border-yellow-400 rounded-full pl-12 pr-10 py-2.5 text-yellow-400 placeholder-yellow-400/70 outline-none focus:ring-2 focus:ring-yellow-400/50 transition">
+                <button type="submit" class="absolute left-4 top-1/2 -translate-y-1/2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+
+                <!-- Tombol ✕ reset, muncul hanya saat ada keyword -->
+                <?php if (!empty($keyword ?? '')): ?>
+                    <a href="/achievements/list"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-yellow-400/70 hover:text-yellow-400 text-lg leading-none transition">
+                        ✕
+                    </a>
+                <?php endif; ?>
+            </form>
         </div>
 
         <!-- Title + Add Button -->
-        <div class="flex items-center justify-between mt-8 mb-8">
+        <div class="flex items-center justify-between mt-8 mb-4">
             <a href="/achievements/insert"
                 class="bg-yellow-500 text-black w-12 h-12 rounded-full text-3xl font-bold flex items-center justify-center hover:scale-110 transition active:scale-95 shadow-md">
                 +
@@ -41,13 +52,34 @@
             <div class="w-12"></div>
         </div>
 
+        <!-- ✅ Info hasil pencarian -->
+        <?php if (!empty($keyword ?? '')): ?>
+            <div class="mb-5 flex items-center gap-2 text-sm text-yellow-400/70">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Hasil pencarian untuk
+                <span
+                    class="bg-yellow-500/20 text-yellow-400 px-2.5 py-0.5 rounded-full font-semibold border border-yellow-500/30">
+                    <?= htmlspecialchars($keyword) ?>
+                </span>
+                — ditemukan
+                <strong class="text-yellow-400"><?= count($achievementsWithoutBanner ?? []) ?></strong> data
+            </div>
+        <?php else: ?>
+            <div class="mb-5"></div>
+        <?php endif; ?>
+
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
             <?php if (!empty($achievementsWithoutBanner) && is_array($achievementsWithoutBanner)): ?>
                 <?php foreach ($achievementsWithoutBanner as $achievement): ?>
 
-                    <div class="border border-yellow-500/50 bg-[#151d35] rounded-xl p-4 flex flex-col justify-between gap-4 hover:border-yellow-400 transition shadow-md">
+                    <div
+                        class="border border-yellow-500/50 bg-[#151d35] rounded-xl p-4 flex flex-col justify-between gap-4 hover:border-yellow-400 transition shadow-md">
 
                         <!-- Info -->
                         <div class="flex items-center gap-3">
@@ -89,8 +121,17 @@
 
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="col-span-4 text-center p-12 border border-dashed border-gray-600 rounded-xl">
-                    <p class="text-gray-400 text-sm">Belum ada data karya siswa tanpa banner saat ini.</p>
+                <div class="col-span-4 text-center p-12 border border-dashed border-yellow-500/30 rounded-xl">
+                    <?php if (!empty($keyword ?? '')): ?>
+                        <p class="text-yellow-400/50 text-sm">Tidak ada data yang cocok dengan
+                            "<strong><?= htmlspecialchars($keyword) ?></strong>".</p>
+                        <a href="/achievements/list"
+                            class="mt-3 inline-block text-yellow-400 underline text-sm hover:text-yellow-300">
+                            Lihat semua data
+                        </a>
+                    <?php else: ?>
+                        <p class="text-gray-400 text-sm">Belum ada data karya siswa tanpa banner saat ini.</p>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
 
