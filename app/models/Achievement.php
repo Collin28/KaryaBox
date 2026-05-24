@@ -24,7 +24,6 @@ class Achievement extends Database
         $result = mysqli_query($this->connection, $query);
 
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
-
     }
 
     public function getAchivementsWithoutBanner()
@@ -47,7 +46,6 @@ class Achievement extends Database
 
     public function getAchivement(int $id)
     {
-
         $query = "SELECT achievements.*, 
                      unit_sekolah.nama_sekolah,
                      categories.category_name AS category_name
@@ -62,11 +60,8 @@ class Achievement extends Database
         $stmt->bind_param('i', $id);
         $stmt->execute();
 
-
-
         $result = $stmt->get_result();
         $achievement = $result->fetch_assoc();
-
 
         return $achievement;
     }
@@ -140,36 +135,38 @@ class Achievement extends Database
     }
 
     public function update(int $id, array $data, array $file = []): bool
-{
-    $title  = htmlspecialchars($data['title']);
-    $desc   = htmlspecialchars($data['description']);
-    $cate   = (int) $data['category_id'];
+    {
+        $name   = htmlspecialchars($data['name']);
+        $title  = htmlspecialchars($data['title']);
+        $desc   = htmlspecialchars($data['description']);
+        $cate   = (int) $data['category_id'];
+        $school = (int) $data['unit_sekolah_id'];
 
-    $imageUrl = $this->uploadImage($file);
+        $imageUrl = $this->uploadImage($file);
 
-    if ($imageUrl === false) {
-        return false;
+        if ($imageUrl === false) {
+            return false;
+        }
+
+        if ($imageUrl === null) {
+            // No new image — keep existing
+            $query = "UPDATE {$this->table} 
+                      SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=? 
+                      WHERE id=?";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bind_param('sssiii', $name, $title, $desc, $cate, $school, $id);
+        } else {
+            // New image uploaded
+            $query = "UPDATE {$this->table} 
+                      SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=?, image_url=? 
+                      WHERE id=?";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bind_param('sssiisi', $name, $title, $desc, $cate, $school, $imageUrl, $id);
+        }
+
+        $stmt->execute();
+        return $stmt->affected_rows >= 0 && $stmt->errno === 0;
     }
-
-    if ($imageUrl === null) {
-        // No new image — keep existing
-        $query = "UPDATE {$this->table} 
-                  SET title=?, description=?, category_id=? 
-                  WHERE id=?";
-        $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('ssii', $title, $desc, $cate, $id);
-    } else {
-        // New image uploaded
-        $query = "UPDATE {$this->table} 
-                  SET title=?, description=?, category_id=?, image_url=? 
-                  WHERE id=?";
-        $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('ssiis', $title, $desc, $cate, $imageUrl, $id);
-    }
-
-    $stmt->execute();
-    return $stmt->affected_rows >= 0 && $stmt->errno === 0;
-}
 
 }
 ?>
