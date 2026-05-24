@@ -141,9 +141,11 @@ class Achievement extends Database
 
     public function update(int $id, array $data, array $file = []): bool
 {
+    $name   = htmlspecialchars($data['name']);
     $title  = htmlspecialchars($data['title']);
     $desc   = htmlspecialchars($data['description']);
     $cate   = (int) $data['category_id'];
+    $school = (int) $data['unit_sekolah_id'];
 
     $imageUrl = $this->uploadImage($file);
 
@@ -152,19 +154,17 @@ class Achievement extends Database
     }
 
     if ($imageUrl === null) {
-        // No new image — keep existing
         $query = "UPDATE {$this->table} 
-                  SET title=?, description=?, category_id=? 
+                  SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=? 
                   WHERE id=?";
         $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('ssii', $title, $desc, $cate, $id);
+        $stmt->bind_param('sssiii', $name, $title, $desc, $cate, $school, $id);
     } else {
-        // New image uploaded
         $query = "UPDATE {$this->table} 
-                  SET title=?, description=?, category_id=?, image_url=? 
+                  SET name=?, title=?, description=?, category_id=?, unit_sekolah_id=?, image_url=? 
                   WHERE id=?";
         $stmt = $this->connection->prepare($query);
-        $stmt->bind_param('ssiis', $title, $desc, $cate, $imageUrl, $id);
+        $stmt->bind_param('sssiisi', $name, $title, $desc, $cate, $school, $imageUrl, $id);
     }
 
     $stmt->execute();

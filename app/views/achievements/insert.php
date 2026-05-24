@@ -45,10 +45,18 @@
 
         <!-- Sekolah -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
-          <label class="text-2xl font-semibold">Sekolah</label>
-          <input type="text" name="unit_sekolah_id" required
-            class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
-        </div>
+  <label class="text-2xl font-semibold">Sekolah</label>
+  <select name="unit_sekolah_id" required
+    class="bg-[#1B1F3B] border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white">
+    <option value="" disabled selected>Pilih Sekolah</option>
+    <option value="1">SMKK IMMA 1</option>
+    <option value="2">SMAK IMMA</option>
+    <option value="3">SMKK IMMA 2</option>
+    <option value="4">SMPK IMMA</option>
+    <option value="5">SDK IMMA 1</option>
+    <option value="6">SDK IMMA 2</option>
+  </select>
+</div>
 
         <!-- Judul Karya -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
@@ -59,10 +67,15 @@
 
         <!-- Kategori -->
         <div class="grid grid-cols-[180px_1fr] items-center gap-4">
-          <label class="text-2xl font-semibold">Kategori</label>
-          <input type="text" name="category_id" required
-            class="bg-transparent border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white" />
-        </div>
+  <label class="text-2xl font-semibold">Kategori</label>
+  <select name="category_id" required
+    class="bg-[#1B1F3B] border-2 border-[#F4C430] rounded-lg px-4 py-3 outline-none text-white">
+    <option value="" disabled selected>Pilih Kategori</option>
+    <option value="1">Seni</option>
+    <option value="2">Olahraga</option>
+    <option value="3">Akademik</option>
+  </select>
+</div>
 
         <!-- Deskripsi -->
         <div class="grid grid-cols-[180px_1fr] gap-4">
